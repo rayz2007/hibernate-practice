@@ -18,7 +18,7 @@ public class PrimaryKeyDemo {
             // use session to save object & create a transaction
             Student tempStudent1 = new Student("Paul", "Wall", "paul@lol.com");
             Student tempStudent2 = new Student("Ray", "Zhang", "ray@lol.com");
-            Student tempStudent3 = new Student("bob", "lao", "bob@lol.com");
+            Student tempStudent4 = new Student("bob", "lao", "bob@lol.com");
             session.beginTransaction();
             
             System.out.println("Saving student");

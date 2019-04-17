@@ -1,32 +1,42 @@
 package com.luv2code.hibernate.demo;
 
 import org.hibernate.Session;
-import java.util.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import com.luv2code.hibernate.demo.entity.Student;
 
-public class QueryStudentDemo {
+public class UpdateStudentDemo {
 
     public static void main(String[] args) {
         
         //session factory
         SessionFactory factory= new Configuration().configure().addAnnotatedClass(Student.class).buildSessionFactory();
         
-        Session session = factory.getCurrentSession();
+        
         
         try {
+            int studentId = 1;
+            Session session = factory.getCurrentSession();
             // use session to save object & create a transaction
             session.beginTransaction();
             
-            List<Student> theStudents = session.createQuery("from Student s where s.lastName='Duck'").getResultList();
+            Student myStudent = session.get(Student.class, studentId);
+            System.out.println("Saving student");
+            System.out.println("This student " + myStudent);
             
-            displayStudents(theStudents);
+            myStudent.setFirstName("scoob");
             
-            theStudents = session.createQuery("from Student s where s.lastName='Duck' or s.firstName='Paul'").getResultList();
-            displayStudents(theStudents);
             session.getTransaction().commit(); 
+            
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            
+            System.out.println("Updating all emails");
+            
+            session.createQuery("update Student set email='foo@gmail.com'").executeUpdate();
+            
+            session.getTransaction().commit();
             
             
             
@@ -34,12 +44,6 @@ public class QueryStudentDemo {
             factory.close();
         }
 
-    }
-
-    private static void displayStudents(List<Student> theStudents) {
-        for (Student theStudent : theStudents) {
-            System.out.println(theStudent);
-        }
     }
 
 }
